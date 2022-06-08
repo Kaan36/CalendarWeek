@@ -1,14 +1,27 @@
-import { calendarWeekData } from "./seed";
-import { reactive, readonly } from "vue";
+import { calendarWeekData } from './seed';
+import { reactive, readonly } from 'vue';
 
 const state = reactive({
   calendarWeekData,
-  activeView: "CalendarWeek",
+  activeView: 'CalendarWeek',
+  activeOrdering: 'title',
 });
 
 const getters = {
   activeDay: () => state.calendarWeekData.find((day) => day.active),
   activeView: () => state.activeView,
+  activeOrdering: () => state.activeOrdering,
+  events: (dayId) => {
+    const dayObj = state.calendarWeekData.find((day) => day.id === dayId);
+    return dayObj.events.sort((eventA, eventB) => {
+      if (eventA[state.activeOrdering] > eventB[state.activeOrdering]) {
+        return 1;
+      } else if (eventA[state.activeOrdering] < eventB[state.activeOrdering]) { 
+        return -1;
+      }
+      return 0;
+    });
+  },
 };
 
 const mutations = {
@@ -30,7 +43,7 @@ const mutations = {
     eventObj.edit = true;
   },
   updateEvent(dayId, oldEventTitle, newEvent) {
-    newEvent.title = newEvent.title !== "" ? newEvent.title : oldEventTitle;
+    newEvent.title = newEvent.title !== '' ? newEvent.title : oldEventTitle;
     const dayObj = state.calendarWeekData.find((day) => day.id === dayId);
     const eventObj = dayObj.events.find(
       (event) => event.title === oldEventTitle
@@ -46,6 +59,9 @@ const mutations = {
   },
   setActiveView(view) {
     state.activeView = view;
+  },
+  setActiveOrdering(ordering) {
+    state.activeOrdering = ordering;
   },
   submitEvent(eventDO) {
     const activeDay = getters.activeDay();

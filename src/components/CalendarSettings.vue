@@ -13,7 +13,10 @@
             class="nav-item"
             role="button"
           >
-            <a class="nav-link" :class="isActiveView(componentName)" @click="changeActiveView(componentName)"
+            <a
+              class="nav-link"
+              :class="isActiveView(componentName)"
+              @click="changeActiveView(componentName)"
               ><i class="text-success" :class="icon"></i
             ></a>
           </li>
@@ -21,12 +24,18 @@
         <hr />
         <ul class="nav nav-pills nav-fill">
           <li class="nav-item" role="button">
-            <a class="nav-link"
+            <a
+              class="nav-link"
+              :class="isActiveOrdering('priority')"
+              @click="changeOrdering('priority')"
               ><i class="fas fa-sort-numeric-down-alt text-success"></i
             ></a>
           </li>
           <li class="nav-item" role="button">
-            <a class="nav-link"
+            <a
+              class="nav-link"
+              :class="isActiveOrdering('title')"
+              @click="changeOrdering('title')"
               ><i class="fas fa-sort-alpha-down text-success"></i
             ></a>
           </li>
@@ -37,15 +46,15 @@
 </template>
 
 <script>
-import Store from "../store.js";
+import Store from '../store.js';
 
 export default {
-  name: "CalendarSettings",
+  name: 'CalendarSettings',
   data() {
     return {
       views: {
-        CalendarWeek: "fas fa-table ",
-        CalendarWeekAsList: "fas fa-list",
+        CalendarWeek: 'fas fa-table ',
+        CalendarWeekAsList: 'fas fa-list',
       },
     };
   },
@@ -54,10 +63,18 @@ export default {
       Store.mutations.setActiveView(componentName);
     },
     isActiveView(componentName) {
-      if(componentName === Store.getters.activeView()) {
-        return ["border border-success"]
+      if (componentName === Store.getters.activeView()) {
+        return ['border border-success'];
       }
-    }
+    },
+    changeOrdering(ordering) {
+      Store.mutations.setActiveOrdering(ordering);
+    },
+    isActiveOrdering(ordering) {
+      if (ordering === Store.getters.activeOrdering()) {
+        return ['border border-success'];
+      }
+    },
   },
 };
 </script>
