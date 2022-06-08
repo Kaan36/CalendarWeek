@@ -18,8 +18,8 @@
           :key="event"
         >
           <template #eventPriority="slotProps">
-            <h5>{{ slotProps.priorityDisplayName }}</h5></template
-          >
+            <h5>{{ slotProps.priorityDisplayName }}</h5>
+          </template>
           <template #default="{ event: entry }">
             <i>{{ entry.title }}</i></template
           >
